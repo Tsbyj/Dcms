@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员主界面</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<script type="text/html" id="customer">
+    <ul class="layui-nav layui-nav-tree">
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/admin/toIndex')">客户数据</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/admin/toCusList')">客户列表</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/admin/toAddCus')">添加客户</a></li>
+    </ul>
+</script>
+<script type="text/html" id="doctor">
+    <ul class="layui-nav layui-nav-tree" lay-filter="doctor">
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/doctor/adminToDocList')">医生列表</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/admin/toCaseList')">病例列表</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/case/adminToCaseAdd')">新增病例</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/doctor/toAddDoc')">添加医生</a></li>
+    </ul>
+</script>
+<script type="text/html" id="medicine">
+    <ul class="layui-nav layui-nav-tree">
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/med/toList')">药品列表</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/med/toAdd')">药品添加</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/med/toMedIndex')">药品数据</a></li>
+    </ul>
+</script>
+<script type="text/html" id="newsAbout">
+    <ul class="layui-nav layui-nav-tree">
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/news/toList')">文章列表</a></li>
+        <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/news/toAdd')">添加文章</a></li>
+    </ul>
+</script>
+<div class="layui-layout layui-layout-admin" id="app">
+    <div class="layui-header">
+        <div class="layui-logo">私人牙医 后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <div class="layui-tab">
+            <ul class="layui-nav layui-layout-left" lay-filter="demo">
+                <li class="layui-nav-item"><a href="javascript:;" id="cus">客户管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" id="doc">医生管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" id="med">药品管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" id="news">文章管理</a></li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li th:if="${session.userName == null}" class="layui-nav-item">
+                    <a th:href="@{/login/toLogin}">
+                        <spqn>登录</spqn>
+                    </a>
+                </li>
+                <li th:unless="${session.userName == null}" class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                        <spqn th:text="${session.userName}"></spqn>
+                    </a>
+                    <dl class="layui-nav-child">
+<!--                        <dd><a href="">基本资料</a></dd>-->
+                        <dd><a href="javascript:;" onclick="goto('/admin/toAdminRePass')">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li th:unless="${session.userName == null}" class="layui-nav-item">
+                    <a th:href="@{/login/edit}">注销</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll" lay-filter="test1">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <div style="margin-top: 10px" id="change">
+                <ul class="layui-nav layui-nav-tree">
+                    <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/admin/toIndex')">客户数据</a></li>
+                    <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/cus/adminToList')">客户列表</a></li>
+                    <li class="layui-nav-item"><a href="javascript:;" onclick="goto('/cus/adminToAddCus')">添加客户</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <iframe id="ifr" style="width: 100%;height: 100%" frameborder="0" src="/admin/toIndex"></iframe>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 私人牙医——牙科诊所管理系统
+    </div>
+</div>
+
+<script src="/layui/layui.js" charset="utf-8"></script>
+<script>
+    function goto(index){
+        var ss = document.getElementById('ifr').getAttribute('src');
+        document.getElementById('ifr').setAttribute('src', index);
+    }
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+        var $ = layui.jquery;
+        // 根据顶部导航栏动态改变侧边导航栏
+        element.on('nav(demo)',function (elem) {
+            if(elem.context.id == 'cus'){
+                element.render('nav','test1');
+                var ss = $('#customer').html();
+                $('#change').html(ss);
+                goto('/admin/toIndex');
+            }else if(elem.context.id == 'doc'){
+                element.render('nav','test1');
+                var ss = $('#doctor').html();
+                $('#change').html(ss);
+                goto('/doctor/adminToDocList');
+            }else if(elem.context.id == 'med'){
+                element.render('nav','test1');
+                var ss = $('#medicine').html();
+                $('#change').html(ss);
+                goto('/med/toMedIndex');
+            }else if(elem.context.id == 'news'){
+                element.render('nav','test1');
+                var ss = $('#newsAbout').html();
+                $('#change').html(ss);
+                goto('/news/toList');
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

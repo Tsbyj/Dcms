@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>预约就诊表</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<div style="margin: 0 50px 0 50px">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">添加预约</div>
+                <div class="layui-card-body">
+                    <form class="layui-form layui-form-pane" id="workLine">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">预约客户</label>
+                                <div class="layui-input-inline">
+                                    <select name="customerId" lay-verify="required" lay-search="">
+                                        <option value="">选择预约客户</option>
+                                        <option th:each="cu:${cus}" th:value="${cu.getCustomerId()}" th:text="${cu.getCustomerId()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">预约目的</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="purpose" placeholder="请输入"
+                                       autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">预约时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="appointment" id="date" required
+                                           placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">持续时间</label>
+                                <div class="layui-input-inline">
+                                    <select name="durationTime" lay-verify="required">
+                                        <option value="">小时</option>
+                                        <option value="1">1小时</option>
+                                        <option value="2">2小时</option>
+                                        <option value="3">3小时</option>
+                                        <option value="4">4小时</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button id="sub" class="layui-btn" lay-submit lay-filter="go">添加</button>
+                            <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">预约信息</div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="workLineTable" lay-filter="workLineTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="yes" title="预约就诊完成">
+        <span class="layui-icon">&#xe605;</span><!--workFlag = 1-->
+    </a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="no" title="未按时就诊">
+        <span class="layui-icon">&#x1006;</span><!--workFlag = 2-->
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="cancel">取消</a><!--workFlag = 4-->
+</script>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'laydate', 'table'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var $ = layui.jquery;
+        var table = layui.table;
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#date'
+            , type: 'datetime'
+        });
+        //监听提交
+        form.on('submit(go)', function (data) {
+            var workLine = data.field;
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/work/insertWork',
+                data: JSON.stringify(workLine),
+                success: function (result) {
+                    console.log('客户新增结果：' + result);
+                    if (result > 0) {
+                        layer.msg('添加成功！');
+                        location.reload();
+                    }else {
+                        layer.msg('添加结果：' + result);
+                    }
+                },
+                error: function (e) {
+                    console.log('error代码' + e.status);
+                    console.log('error内容' + e.responseText);
+                }
+            });
+            return false;
+        });
+        //展示该医生所有预约信息
+        table.render({
+            elem: '#workLineTable'   //渲染目标
+            ,url:'/work/findAllNWork'  // 路径默认从static下开始，而且是绝对路径，数据接口;非前后端分离可以直接写Handler中的接口名，不必写：http://localhost:8082
+            ,title: '病例数据表' //数据导出标题
+            ,id: 'caseTableReload' //数据导出标题
+            ,page: false    //是否开启分页功能
+            ,cols: [
+                [
+                     { field: 'workId', title: '预约编号', width: 150, fixed: 'left', unresize: true, sort: true }
+                    , { field: 'appointment', title: '预约时间', width:200, sort: true, style:'color: #0909f2;'}
+                    , { field: 'customerId', title: '客户ID', width: 150}
+                    , { field: 'purpose', title: '预约目的'}
+                    , { field: 'workFlag', title: '状态'}
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 160 }
+                ]
+            ]
+            ,done: function (res) {
+                $("[data-field = 'workFlag']").children().each(function () {
+                    if($.trim($(this).text()) == '1'){
+                        $(this).text('已就诊');
+                    }else if ($.trim($(this).text()) == '2'){
+                        $(this).text('未就诊');
+                    }else if ($.trim($(this).text()) == '3'){
+                        $(this).text('未到时间');
+                    }else if ($.trim($(this).text()) == '4'){
+                        $(this).text('已取消');
+                    }
+                });
+            }
+        });
+        //监听行工具事件
+        table.on('tool(workLineTable)', function(obj){
+            //obj.data包含该行表格的所有数据（是个对象）
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'yes'){
+                layer.confirm('确定客户完成预约？', function(index){
+                    obj.del();
+                    //index 为选中的行数，一般为1
+                    data.workFlag = 1;
+                    data.remake = '客户已完成就诊';
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json;charset=UTF-8',
+                        url: '/work/updateFlag',
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            if(result > 0){
+                                layer.msg('更新成功！');
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e.status);
+                            console.log(e.responseText);
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if(obj.event === 'no'){
+                layer.confirm('确定客户未按时赴约就诊？', function(index){
+                    obj.del();
+                    //index 为选中的行数，一般为1
+                    data.workFlag = 2;
+                    data.remake = '客户未按时赴约就诊';
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json;charset=UTF-8',
+                        url: '/work/updateFlag',
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            if(result > 0){
+                                layer.msg('更新成功！');
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e.status);
+                            console.log(e.responseText);
+                        }
+                    });
+                    layer.close(index);
+                });
+            }else if(obj.event === 'cancel'){
+                layer.confirm('确定取消预约？', function(index){
+                    obj.del();
+                    //index 为选中的行数，一般为1
+                    data.workFlag = 4;
+                    data.remake = '客户或医生因特殊原因取消预约';
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json;charset=UTF-8',
+                        url: '/work/updateFlag',
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            if(result > 0){
+                                layer.msg('更新成功！');
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e.status);
+                            console.log(e.responseText);
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

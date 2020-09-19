@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增客户界面</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<div style="margin: 0 50px 0 50px">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>新增客户</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" id="cusform">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="customerName" placeholder="请输入"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证件号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="cid" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" lay-filter="sex" value="男" title="男" checked="">
+                <input type="radio" name="sex" lay-filter="sex" value="女" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline">
+                <input type="text" name="age" placeholder="请输入年龄" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">职业</label>
+            <div class="layui-input-inline">
+                <input type="text" name="job" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">家庭住址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="address" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">紧急联系人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ecName" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 120px;">紧急联系电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ecPhone" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">过敏史</label>
+            <div class="layui-input-block">
+                <textarea id="allergy" name="allergy" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">系统性疾病历史</label>
+            <div class="layui-input-block">
+                <input id="systemicDis" type="text" name="systemicDis" placeholder="其他" class="layui-input">
+                <input type="checkbox" title="无" value="无" checked="">
+                <input type="checkbox" title="心脏病" value="心脏病">
+                <input type="checkbox" title="心脏起搏器" value="心脏起搏器">
+                <input type="checkbox" title="高血压" value="高血压">
+                <input type="checkbox" title="糖尿病" value="糖尿病">
+                <input type="checkbox" title="获得性免疫缺陷" value="获得性免疫缺陷">
+                <input type="checkbox" title="出血性疾病" value="出血性疾病">
+                <input type="checkbox" title="癫痫病" value="癫痫病">
+                <input type="checkbox" title="甲亢" value="甲亢">
+                <input type="checkbox" title="肾脏疾病" value="肾脏疾病">
+                <input type="checkbox" title="肝炎" value="肝炎">
+                <input type="checkbox" title="恶性肿瘤" value="恶性肿瘤">
+                <input type="checkbox" title="骨质疏松" value="骨质疏松">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 180px;">是否长期服用某种药物</label>
+            <div class="layui-input-inline">
+                <input type="text" name="attribute1" placeholder="否 / 使用药物" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" id="attribute2" style="display: none;">
+            <label class="layui-form-label" style="width: 180px;">是否怀孕</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="attribute2" value="是" title="是">
+                <input type="radio" name="attribute2" value="否" title="否" checked="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-card-body"
+                 style="overflow: hidden;background-color: #FBFBFB;border: 1px solid #e6e6e6;">
+                <p>我已认真填写表格，保证所有内容属实。我已充分了解信息错漏对健康的危害，自愿承担因信息错漏不实而导致的不良后果。</p>
+                <div class="layui-input-block" style="float: right;">
+                    <input type="radio" name="attribute3" lay-filter="attribute3" value="是" title="阅读并同意" checked="">
+                    <input type="radio" name="attribute3" lay-filter="attribute3" value="否" title="拒绝">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button id="sub" class="layui-btn" lay-submit lay-filter="go">添加</button>
+            <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'layer','element'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , $ = layui.jquery
+            , element = layui.element;
+        // 监听性别单选框
+        form.on("radio(sex)", function (data) {
+            // console.log(sex);
+            if (this.value === '男') {
+                $('#attribute2').css('display','none');
+            } else if (this.value === '女') {
+                $('#attribute2').css('display','block');
+            }
+        });
+        // 监听保证单选框
+        form.on("radio(attribute3)", function (data) {
+            var attribute3 = data.value;
+            if (attribute3 === '否') {
+                layer.alert('请您仔细阅读并同意该条款！',{
+                    title: '系统提示'
+                });
+                $("#sub").attr('disabled','disabled');
+                $("#sub").attr('class','layui-btn layui-btn-disabled');
+            } else {
+                $("#sub").removeAttr('disabled');
+                $("#sub").attr('class','layui-btn');
+            }
+        });
+        //监听提交
+        form.on('submit(go)', function (data) {
+            var customer = data.field;
+            // 设置系统性疾病属性内容
+            if (customer.systemicDis == null || customer.systemicDis == '' || customer.systemicDis == undefined) {
+                var arr_box = [];
+                $('input[type=checkbox]:checked').each(function () {
+                    arr_box.push($(this).val());
+                });
+                var ss = arr_box.join(',').toString();
+                customer.systemicDis = ss;
+            }
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/user/registerCus',
+                data: JSON.stringify(customer),
+                success: function (result) {
+                    console.log('客户新增结果：' + result);
+                    if(result > 0){
+                        layer.alert('添加成功！',{
+                            title: '客户添加提示'
+                        });
+                        $('#reset').click();
+                    }
+                },
+                error: function (e) {
+                    console.log('error代码' + e.status);
+                    console.log('error内容' + e.responseText);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

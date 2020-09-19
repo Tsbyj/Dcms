@@ -1,0 +1,170 @@
+/* 公共样式 */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    /* height: 10000px; */
+    font: 12px/1.5 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+}
+
+/* header */
+
+.head {
+    height: 93.75px;
+    padding: 0 40px;
+    position: relative;
+    border-bottom: 1px solid #efefef;
+}
+
+.head-logo {
+    float: left;
+    width: 247.2px;
+    padding: 10px 0;
+}
+
+.head-logo img {
+    width: 186px;
+}
+
+.head-nav {
+    float: left;
+    width: 1000px;
+    height: 93.75px;
+}
+
+.head-nav ul {
+    height: 35px;
+    margin-top: 30px;
+    padding: 0 50px;
+}
+
+.head-nav ul li a {
+    float: left;
+    padding: 6px 0 7px;
+    margin-left: 50px;
+    font-size: 14px;
+    word-spacing: normal;
+    color: #666666;
+    font-family: "微软雅黑", Helvetica, Arial, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.head-num {
+    float: left;
+    width: 192px;
+    margin-top: 25px;
+    position: relative;
+}
+
+.head-num img {
+    margin-top: 13px;
+    width: 20px;
+    height: 20px;
+}
+
+.head-num span {
+    position: absolute;
+    left: 35px;
+    top: 10px;
+    font-family: arial;
+    font-size: 18px;
+    color: #2096ee;
+}
+
+/* 新闻身体部分 */
+.news-body {
+    /* background-color: yellow; */
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+.news-body .news-body1 {
+    width: 80%;
+    margin: 80px auto 0;
+    /* background-color: white; */
+    overflow: hidden;
+}
+.news-body .news-body1 .news-left {
+    float: left;
+    width: 810px;
+    /* background-color: salmon; */
+    overflow: hidden;
+}
+.news-body .news-body1 .news-left .news-title {
+    font-family: 微软雅黑;
+    font-size: 26px;
+    font-weight: normal;
+    font-style: normal;
+    color: #191919;
+    /* background-color: white; */
+    margin-bottom: 20px;
+}
+.news-body .news-body1 .news-left .news-author {
+    line-height: 1.5em;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    color: #000000;
+    /* background-color: yellowgreen; */
+    margin-bottom: 20px;
+}
+.news-body .news-body1 .news-left .news-img {
+    margin-bottom: 20px;
+}
+.news-body .news-body1 .news-left .news-content {
+    margin-bottom: 20px;
+}
+.news-body .news-body1 .news-left .news-content p {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    text-align: inherit;
+    font-family: 微软雅黑;
+    line-height: 25px;
+    color: rgb(128, 128, 128);
+}
+
+
+.news-body .news-body1 .news-right{
+    float: left;
+    width: 290px;
+    margin-left: 90px;
+    /* background-color: springgreen; */
+}
+.news-body .news-body1 .news-right .news-model{
+    overflow: hidden;
+    /* background-color: darkkhaki; */
+    margin: 10px 0 0 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+.news-body .news-body1 .news-right .news-model a p {
+    width: 250px;
+    color: #373A41;
+    font-size: 15px;
+    font-family: 微软雅黑;
+    margin-bottom: 10px;
+    line-height: 15px;
+    /* display: block; */
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+.news-body .news-body1 .news-right .news-model span {
+    color: #bfbfbf;
+    font-size: 12px;
+    line-height: 12px;
+    font-family: 微软雅黑;
+    margin-bottom: 15px;
+    display: block;
+}

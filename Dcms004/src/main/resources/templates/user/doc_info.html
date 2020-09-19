@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>医生详细信息</title>
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+</head>
+<body>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header" th:text="${doc.getDocName()}">王富贵</div>
+                <div class="layui-card-body">
+                    性别：<span style="color: #8D8D8D" th:text="${doc.getDocSex()}">男</span><br>
+                    职称：<span style="color: #8D8D8D" th:text="${doc.getDocTitle()}">主治医师</span><br>
+                    学历：<span style="color: #8D8D8D" th:text="${doc.getEducation()}">硕士</span><br>
+                    工作年限：<span style="color: #8D8D8D" th:text="${doc.getWorkYear()}">在职23年</span><br>
+                    个人简介：<p style="color: #8D8D8D" th:text="${doc.getDocIntroduce()}">在职期间荣获多项奖项，完成口腔疾病治疗400多例，或绝大多数好评，深受患者的信赖！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

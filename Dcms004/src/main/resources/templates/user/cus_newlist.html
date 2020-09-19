@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>新闻列表</title>
+		<link rel="stylesheet" href="/css/cus_newslist.css">
+	</head>
+	<body>
+		<!-- header开始 -->
+		<div class="head">
+			<div class="head-logo">
+				<a href="/login/userLogin">
+					<img src="/img/logo.webp" alt="">
+				</a>
+			</div>
+			<div class="head-nav">
+				<ul class="aha">
+					<li><a href="/user/toCusWel">首页 HOME</a></li>
+					<li><a href="/user/toDocList">医生介绍 TEAM</a></li>
+					<li><a href="#">新闻资讯 NEWS</a></li>
+					<li><a href="/user/toCusWel#about">关于我们 ABOU</a></li>
+					<li><a href="/user/toCusWel#contact">联系我们 CONTACT</a></li>
+				</ul>
+			</div>
+			<div class="head-num">
+				<img src="/img/phone.png" alt="">
+				<span>400-8888-8888</span>
+			</div>
+		</div>
+		<!-- 身体部分 -->
+		<!-- 身体部分 -->
+		<div class="cus-body">
+			<!-- 顶部横条 -->
+			<div class="head-p">
+				<!-- 中间文字部分 -->
+				<div class="title">
+					<!-- 大字 -->
+					<p>新闻资讯</p>
+					<!-- 小字 -->
+					<span>INFORMATON</span>
+				</div>
+			</div>
+			<div class="content">
+				<ul class="newsList">
+					<li th:each="news:${newsList}">
+						<div class="phone">
+							<div>
+								<img src="/img/news/news1.webp" alt="">
+							</div>
+						</div>
+						<div class="desc">
+							<div class="title">
+								<a th:href="@{'/user/toNews?newsId='+${news.getNewsId()}}" th:text="${news.getHeadLine()}">上市房地产企业资产规模增速放缓</a>
+							</div>
+							<div class="cont">
+								<span>发布日期：<i th:text="${news.getNewsTime()}">2020-03-05</i></span>
+								<p th:text="${news.getGeneral()}">中国房地产业协会、上海易居房地产研究
+								院中国房地产测评中心近日联合发布研报显
+								示，在房地产去杠杆的大趋势下，上市房企
+								资产规模增速开始放缓，未来部分房企的资
+								金链或面临较大压力。 这份名为《中国房地
+								产上市公司测评研究成果报告》的研报显示
+								，上市房企资...</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

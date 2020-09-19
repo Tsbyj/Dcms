@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcms.repository.LoginCountRepository">
+    <select id="findAll" resultType="LoginCount">
+        select * from login_count
+    </select>
+    <select id="findByUserId" parameterType="java.lang.String" resultType="LoginCount">
+        select * from login_count where USERID=#{userId}
+    </select>
+    <select id="getCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(LOGINID) from login_count where LOGINID like #{loginIdPrefix}"%"
+    </select>
+    <select id="getWeekData" parameterType="java.lang.String" resultType="LoginCount">
+        select * from login_count where
+        <if test="beginDate != null and beginDate != ''">
+            DATE_FORMAT(LOGINDATA, '%Y-%m-%d %T:%i:%s')<![CDATA[>=]]>DATE_FORMAT(#{beginDate}, '%Y-%m-%d %T:%i:%s')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and DATE_FORMAT(LOGINDATA, '%Y-%m-%d %T:%i:%s')<![CDATA[<=]]>DATE_FORMAT(#{endDate}, '%Y-%m-%d %T:%i:%s')
+        </if>
+        order by LOGINDATA
+    </select>
+    <insert id="save" parameterType="LoginCount">
+        insert into login_count(LOGINID,LOGINDATA,USERNAME,USERID,USERSORT)
+        values (#{loginId},#{loginData},#{username},#{userId},#{userSort})
+    </insert>
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete * from login_count where LOGINID=#{loginId}
+    </delete>
+</mapper>

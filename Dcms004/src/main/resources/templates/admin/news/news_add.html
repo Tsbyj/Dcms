@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加文章界面</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<div style="margin: 0 50px 0 50px">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>添加文章</legend>
+    </fieldset>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章标题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="headLine" lay-verify="title" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发布人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="author" lay-verify="title" autocomplete="off" placeholder="请输入作者"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-xs6">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <textarea name="content" placeholder="550字左右，不要太多哦！" class="layui-textarea" rows="10"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签</label>
+            <div class="layui-input-inline">
+                <select name="newsLabel">
+                    <option value=""></option>
+                    <option value="科技">科技</option>
+                    <option value="医学" selected="">医学</option>
+                    <option value="新闻">新闻</option>
+                    <option value="药品">药品</option>
+                    <option value="系统通知">系统通知</option>
+                </select>
+            </div>
+        </div>
+        <!--    <input type="text" name="status" style="display: none">-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">发布状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="status" value="1" lay-skin="switch" lay-filter="switchTest" lay-text="已发布|待修改">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addNews">提交</button>
+                <button class="layui-btn layui-btn-primary" id="reset" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['element','form'],function(){
+        var form = layui.form;
+        var $ = layui.jquery;
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            layer.msg('发布状态：'+ this.checked, {
+                offset: '6px'
+            });
+        });
+        //监听提交
+        form.on('submit(addNews)', function(data){
+            var news = JSON.stringify(data.field);
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/news/saveNews',
+                data: news,
+                success: function (result) {
+                    console.log('客户新增结果：' + result);
+                    if(result > 0){
+                        layer.msg('添加结果:'+ result);
+                        $('#reset').click();
+                    }
+                },
+                error: function (e) {
+                    console.log('error代码' + e.status);
+                    console.log('error内容' + e.responseText);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

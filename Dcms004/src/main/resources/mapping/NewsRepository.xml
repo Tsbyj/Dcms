@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcms.repository.NewsRepository">
+    <select id="findAll" resultType="News">
+        select * from news
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </select>
+    <select id="getAll" resultType="News">
+        select * from news where STATUS=1 order by NEWSTIME desc
+    </select>
+    <select id="findById" resultType="News">
+        select * from news where NEWSID=#{newsId}
+    </select>
+    <select id="findByHeadLine" resultType="News" parameterType="java.lang.String">
+        select * from news where HEADLINE like "%"#{headLine}"%"
+    </select>
+    <select id="findOther" resultType="News">
+        select * from news where NEWSID &lt;&gt; #{newsId} and STATUS=1
+    </select>
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(NEWSID) from news
+    </select>
+    <insert id="save" parameterType="News">
+        insert into news(NEWSID,HEADLINE,NEWSLABEL,AUTHOR,GENERAL,CONTENT,NEWSTIME,STATUS)
+        values (#{newsId},#{headLine},#{newsLabel},#{author},#{general},#{content},
+        #{newsTime},#{status})
+    </insert>
+    <update id="updateById" parameterType="News">
+        update news set
+        HEADLINE=#{headLine},NEWSLABEL=#{newsLabel},AUTHOR=#{author},
+        GENERAL=#{general},CONTENT=#{content},NEWSTIME=#{newsTime},
+        <if test="status != null and status != ''">
+            STATUS=#{status}
+        </if>
+        where NEWSID=#{newsId}
+    </update>
+    <!--新增ID专用-->
+    <select id="getNextId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(NEWSID) from news where NEWSID like "%"#{nowTime}"%"
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete from news where NEWSID=#{newsId}
+    </delete>
+</mapper>

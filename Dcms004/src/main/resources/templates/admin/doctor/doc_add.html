@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医生添加界面</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<div style="margin: 20px 50px 0 50px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>添加医生</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="docName" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证件号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="cid" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="docSex" lay-filter="sex" value="男" title="男" checked="">
+                <input type="radio" name="docSex" lay-filter="sex" value="女" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline">
+                <input type="text" name="docAge" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">民族</label>
+            <div class="layui-input-inline">
+                <input type="text" name="nation" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">工作年限</label>
+            <div class="layui-input-inline">
+                <input type="text" name="workYear" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">政治面貌</label>
+            <div class="layui-input-inline">
+                <input type="text" name="politicStatus" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">工作类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="workKind" lay-filter="workKind" value="1" title="护理类">
+                <input type="radio" name="workKind" lay-filter="workKind" value="2" title="医疗类" checked="">
+                <input type="radio" name="workKind" lay-filter="workKind" value="3" title="技师类">
+                <input type="radio" name="workKind" lay-filter="workKind" value="4" title="药师类">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">职称</label>
+            <div class="layui-input-inline">
+                <select name='docTitle' id="docTitle" >
+                    <option value=""></option>
+                    <option value="医士">医士</option>
+                    <option value="医师">医师</option>
+                    <option value="主治医师">主治医师</option>
+                    <option value="副主任医师">副主任医师</option>
+                    <option value="主任医师">主任医师</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学历</label>
+            <div class="layui-input-inline">
+                <select name="education" lay-verify="required">
+                    <option value=""></option>
+                    <option value="大专">大专</option>
+                    <option value="本科">本科</option>
+                    <option value="硕士">硕士</option>
+                    <option value="博士">博士</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">个人简介</label>
+            <div class="layui-input-block">
+                <textarea name="docIntroduce" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="docPhoto">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="docAdd">添加</button>
+                <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form','upload'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , upload = layui.upload
+            , $ = layui.jquery;
+
+        //图片上传
+        var uploadInst = upload.render({
+            elem: '#docPhoto'
+            ,url: '/doctor/fileUpload' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+        form.on("radio(workKind)", function (data) {
+            // console.log(this.value);
+            if (this.value == '1') {
+                $('#docTitle').empty();
+                $('#docTitle').append('<option value=""></option>');
+                $('#docTitle').append('<option value="护士">护士</option>');
+                $('#docTitle').append('<option value="护师">护师</option>');
+                $('#docTitle').append('<option value="主管护师">主管护师</option>');
+                $('#docTitle').append('<option value="副主任护师">副主任护师</option>');
+                $('#docTitle').append('<option value="主任护师">主任护师</option>');
+                form.render('select');
+            } else if (this.value == '2') {
+                $('#docTitle').empty();
+                $('#docTitle').append('<option value=""></option>');
+                $('#docTitle').append('<option value="医士">医士</option>');
+                $('#docTitle').append('<option value="医师">医师</option>');
+                $('#docTitle').append('<option value="主治医师">主治医师</option>');
+                $('#docTitle').append('<option value="副主任医师">副主任医师</option>');
+                $('#docTitle').append('<option value="主任医师">主任医师</option>');
+                form.render('select');
+            } else if (this.value == '3') {
+                $('#docTitle').empty();
+                $('#docTitle').append('<option value=""></option>');
+                $('#docTitle').append('<option value="技师">技师</option>');
+                $('#docTitle').append('<option value="主管技师">主管技师</option>');
+                $('#docTitle').append('<option value="副主任技师">副主任技师</option>');
+                $('#docTitle').append('<option value="主任技师">主任技师</option>');
+                form.render('select');
+            } else if (this.value == '4') {
+                $('#docTitle').empty();
+                $('#docTitle').append('<option value=""></option>');
+                $('#docTitle').append('<option value="药师">药师</option>');
+                $('#docTitle').append('<option value="主管药师">主管药师</option>');
+                $('#docTitle').append('<option value="副主任药师">副主任药师</option>');
+                $('#docTitle').append('<option value="主任药师">主任药师</option>');
+                form.render('select');
+            }
+        });
+
+        //监听提交
+        form.on('submit(docAdd)', function (data) {
+            var doctor = JSON.stringify(data.field);
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/doctor/saveDoc',
+                data: doctor,
+                success: function (result) {
+                    if(result == 1){
+                        layer.msg('新增成功！');
+                    }
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+            $('#reset').click();
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

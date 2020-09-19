@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>药品添加</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<div style="margin: 0 50px 0 50px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>药品添加</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">药品名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="medName" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">药品类型</label>
+            <div class="layui-input-inline">
+                <select name="medType" lay-verify="required" id="docTitle">
+                    <option value=""></option>
+                    <option value="S">手术专用</option>
+                    <option value="C1">内服</option>
+                    <option value="C2">外用</option>
+                    <option value="B1">保健品</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">成分</label>
+            <div class="layui-input-block">
+                <textarea name="ingredient" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">性状</label>
+            <div class="layui-input-block">
+                <textarea name="medCharacter" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">功能主治</label>
+            <div class="layui-input-block">
+                <textarea name="majorFunction" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">用法用量</label>
+            <div class="layui-input-block">
+                <textarea name="useMethod" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">不良反应</label>
+            <div class="layui-input-block">
+                <textarea name="unEffect" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">禁忌</label>
+            <div class="layui-input-block">
+                <textarea name="taboo" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">注意事项</label>
+            <div class="layui-input-block">
+                <textarea name="notice" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">贮藏</label>
+            <div class="layui-input-block">
+                <textarea name="store" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="medAdd">添加</button>
+                <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'layedit', 'element'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , $ = layui.jquery
+            , element = layui.element;
+
+        //监听提交
+        form.on('submit(medAdd)', function (data) {
+            var medicine = JSON.stringify(data.field);
+            console.log(medicine);
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/med/saveMed',
+                data: medicine,
+                success: function (result) {
+                    $('#reset').click();
+                    layer.msg('添加结果：' + result);
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+            $('#reset').click();
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcms.repository.MedicineRepository">
+    <select id="findAll" resultType="Medicine" parameterType="java.lang.Integer">
+        select * from medicine_info
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </select>
+    <select id="findMedById" parameterType="java.lang.String" resultType="Medicine">
+        select * from medicine_info where MEDICINEID=#{medicineId}
+    </select>
+    <select id="findMedByName" parameterType="java.lang.String" resultType="Medicine">
+        select * from medicine_info where MEDNAME like "%"#{medName}"%"
+    </select>
+    <select id="findMedByType" parameterType="java.lang.String" resultType="Medicine">
+        select * from medicine_info where MEDTYPE=#{medType}
+    </select>
+
+    <!--以下为参考方法-->
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(MEDICINEID) from medicine_info
+    </select>
+    <update id="updateMed" parameterType="Medicine">
+        update medicine_info set MEDNAME=#{medName},MEDTYPE=#{medType},INGREDIENT=#{ingredient},
+        MEDCHARACTER=#{medCharacter},MAJORFUNCTION=#{majorFunction},
+        USEMETHOD=#{useMethod},UNEFFECT=#{unEffect},TABOO=#{taboo},NOTICE=#{notice},
+        STORE=#{store}
+        where MEDICINEID=#{medicineId}
+    </update>
+    <insert id="saveMed" parameterType="Medicine">
+        insert into medicine_info(MEDICINEID,MEDNAME,MEDTYPE,INGREDIENT,MEDCHARACTER,MAJORFUNCTION,
+        USEMETHOD,UNEFFECT,TABOO,NOTICE,STORE)
+        values (#{medicineId},#{medName},#{medType},#{ingredient},#{medCharacter},#{majorFunction},
+        #{useMethod},#{unEffect},#{taboo},#{notice},#{store})
+    </insert>
+    <delete id="deleteMedById" parameterType="java.lang.String">
+        delete from medicine_info where MEDICINEID=#{medicineId}
+    </delete>
+    <select id="getMedCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(MEDICINEID) from medicine_info where MEDICINEID like #{medTime}"%"
+    </select>
+</mapper>

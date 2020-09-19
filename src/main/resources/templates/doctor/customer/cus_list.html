@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Layui Table</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" />
+</head>
+<body>
+
+<div class="demoTable" style="margin: 0 0 0 20px">
+    搜索ID：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="selectById" autocomplete="off">
+    </div>
+    <button class="layui-btn" id="IDss">搜索</button>
+    <span style="margin: 0 0 0 20px">搜索Name：</span>
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="selectByName" autocomplete="off">
+    </div>
+    <button class="layui-btn" id="Namess">搜索</button>
+</div>
+
+<table class="layui-hide" id="cusTable" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+<script src="/layui/layui.js"></script>
+<script th:inline="javascript">
+    layui.use(['table','layer'], function(){
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+
+        table.render({
+            elem: '#cusTable'   //渲染目标
+            ,url:'/cus/findAllByDoc'  // 路径默认从static下开始，而且是绝对路径，数据接口;非前后端分离可以直接写Handler中的接口名，不必写：http://localhost:8082
+            ,id: 'cusTableReload'
+            ,title: '用户数据表' //数据导出标题
+            ,page: false    //是否开启分页功能
+            ,cols: [
+                [
+                    { field: 'customerId', title: 'ID', width: 150, fixed: 'left', unresize: true, sort: true }
+                    , { field: 'customerName', title: '用户名', width: 120}
+                    , { field: 'sex', title: '性别', width: 80}
+                    , { field: 'age', title: '年龄', width: 80, sort: true}
+                    , { field: 'cid', title: '证件', width: 180}
+                    , { field: 'job', title: '职业', width: 140}
+                    , { field: 'phone', title: '联系电话', width: 130 }
+                    , { field: 'address', title: '住址', width: 150 }
+                    , { field: 'ecName', title: '紧急联系人', width: 100 }
+                    , { field: 'ecPhone', title: '紧急联系电话', width: 140 }
+                    , { field: 'allergy', title: '过敏史', width: 150 }
+                    , { field: 'attribute1', title: '是否长期服用某种药物', width: 170 }
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 80 }
+                ]
+            ]
+        });
+
+        // ID搜索按钮触发事件
+        $('#IDss').click(function () {
+            var customerId = $('#selectById').val();
+            // console.log(customerId);
+            table.reload('cusTableReload',{
+                url: '/cus/findById?customerId='+customerId,
+                method: 'get'
+            });
+        });
+        // Name搜索按钮触发事件
+        $('#Namess').click(function () {
+            var customerName = $('#selectByName').val();
+            // console.log(customerName);
+            table.reload('cusTableReload',{
+                url: '/cus/findByName?customerName='+customerName,
+                method: 'get'
+            });
+        });
+
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            //obj.data包含该行表格的所有数据（是个对象）
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'edit'){
+                layer.open({
+                    id: 'save-form',
+                    title: '编辑用户',
+                    type: 2,    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    content: '/cus/toCusInfo?customerId='+data.customerId,
+                    area: ['800px', '560px'],
+                    btn: ['提交','重置'],
+                    yes: function (index) {
+                        var frameId=document.getElementById('save-form').getElementsByTagName("iframe")[0].id;
+                        // var body = layer.getChildFrame('body', index);
+                        // body.find('#sub').html()
+                        //获取子页面对象：$('#'+frameId)[0].contentWindow
+                        $('#'+frameId)[0].contentWindow.mySubmit();
+                        layer.close(index);
+                        location.reload();
+                    },
+                    //重置按钮事件
+                    btn2: function(index, layero){
+                        var frameId=document.getElementById('save-form').getElementsByTagName("iframe")[0].id;
+                        $('#'+frameId)[0].contentWindow.reset();
+                        return false;
+                    },
+                    //右上角关闭按钮事件
+                    cancel: function(index, layero){
+                        layer.close(index);
+                        return false;
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

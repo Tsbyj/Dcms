@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>客户主页</title>
+    <link rel="stylesheet" type="text/css" href="/css/cus_info.css"/>
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+</head>
+<body>
+<!-- header开始 -->
+<div class="head">
+    <div class="head-logo">
+        <a href="/login/toUserLogin">
+            <img src="/img/logo.webp" alt="">
+        </a>
+    </div>
+    <div class="head-nav">
+        <ul class="aha">
+            <li><a href="/user/toCusWel">首页 HOME</a></li>
+            <li><a href="/user/toDocList">医生介绍 TEAM</a></li>
+            <li><a href="/user/toNewsList">新闻资讯 NEWS</a></li>
+            <li><a href="/user/toCusWel#about">关于我们 ABOU</a></li>
+            <li><a href="/user/toCusWel#contact">联系我们 CONTACT</a></li>
+        </ul>
+    </div>
+    <div class="head-num">
+        <img src="/img/phone.png" alt="">
+        <span>400-8888-8888</span>
+    </div>
+</div>
+<div class="body">
+    <!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+  <legend>简洁风格的Tab</legend>
+</fieldset>
+ -->
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">基本信息</li>
+            <li>修改密码</li>
+            <li>预约信息</li>
+            <li>病例查看</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <!-- <div class="layui-card-header">基本信息</div> -->
+                            <div class="layui-card-body">
+                                <form class="layui-form layui-form-pane" action="">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">编号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" th:value="${cus.getCustomerId()}" name="customerId"
+                                                   disabled placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                        <div class="layui-form-mid layui-word-aux">编号不可修改</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" th:value="${cus.getCustomerName()}" name="customerName"
+                                                   placeholder="请输入"
+                                                   autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">证件号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" th:value="${cus.getCid()}" name="cid" placeholder="请输入"
+                                                   autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">性别</label>
+                                        <div class="layui-input-block">
+                                            <input type="radio" name="sex" lay-filter="sex" value="男" title="男"
+                                                   checked="">
+                                            <input type="radio" name="sex" lay-filter="sex" value="女" title="女">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">年龄</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" th:value="${cus.getAge()}" name="age" placeholder="请输入年龄"
+                                                   autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">职业</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" th:value="${cus.getJob()}" name="job" placeholder="请输入"
+                                                   autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">联系电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="phone" th:value="${cus.getPhone()}"
+                                                   placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">家庭住址</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="address" th:value="${cus.getAddress()}"
+                                                   placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">紧急联系人</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="ecName" th:value="${cus.getEcName()}"
+                                                   placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" style="width: 120px;">紧急联系电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="ecPhone" th:value="${cus.getEcPhone()}"
+                                                   placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">过敏史</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="allergy" name="allergy" placeholder="请输入内容" th:text="${cus.getAllergy()}"
+                                                class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">系统性疾病历史</label>
+                                        <div class="layui-input-block">
+                                            <input id="systemicDis" type="text" name="systemicDis" placeholder="其他"
+                                                   class="layui-input">
+                                            <input type="checkbox" title="无" value="无" checked="">
+                                            <input type="checkbox" title="心脏病" value="心脏病">
+                                            <input type="checkbox" title="心脏起搏器" value="心脏起搏器">
+                                            <input type="checkbox" title="高血压" value="高血压">
+                                            <input type="checkbox" title="糖尿病" value="糖尿病">
+                                            <input type="checkbox" title="获得性免疫缺陷" value="获得性免疫缺陷">
+                                            <input type="checkbox" title="出血性疾病" value="出血性疾病">
+                                            <input type="checkbox" title="癫痫病" value="癫痫病">
+                                            <input type="checkbox" title="甲亢" value="甲亢">
+                                            <input type="checkbox" title="肾脏疾病" value="肾脏疾病">
+                                            <input type="checkbox" title="肝炎" value="肝炎">
+                                            <input type="checkbox" title="恶性肿瘤" value="恶性肿瘤">
+                                            <input type="checkbox" title="骨质疏松" value="骨质疏松">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" style="width: 180px;">是否长期服用某种药物</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" th:value="${cus.getAttribute1()}" name="attribute1"
+                                                   placeholder="否 / 使用药物" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" id="attribute2" style="display: none;">
+                                        <label class="layui-form-label" style="width: 180px;">是否怀孕</label>
+                                        <div class="layui-input-inline">
+                                            <input type="radio" name="attribute2" value="是" title="是">
+                                            <input type="radio" name="attribute2" value="否" title="否" checked="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-card-body"
+                                             style="overflow: hidden;background-color: #FBFBFB;border: 1px solid #e6e6e6;">
+                                            <p>我已认真填写表格，保证所有内容属实。我已充分了解信息错漏对健康的危害，自愿承担因信息错漏不实而导致的不良后果。</p>
+                                            <div class="layui-input-block" style="float: right;">
+                                                <input type="radio" name="attribute3" lay-filter="attribute3" value="是" title="阅读并同意">
+                                                <input type="radio" name="attribute3" lay-filter="attribute3" value="否" title="拒绝" checked="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button id="sub" class="layui-btn" lay-submit lay-filter="go">提交修改</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <!-- <div class="layui-card-header">修改密码</div> -->
+                            <div class="layui-card-body">
+                                <form class="layui-form" action="">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">原密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" id="pass" placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">新密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" lay-verify="required" id="newPass" name="password" placeholder="请输入"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-form-mid lay-verify layui-word-aux">请填写6到12位密码</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">验证密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" lay-verify="required" id="rePass" placeholder="请输入" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button id="btn" class="layui-btn" lay-submit lay-filter="edit">修改</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+<!--                            <div class="layui-card-header">预约信息</div>-->
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="workLineTable" lay-filter="workLineTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <!--个人病例信息-->
+                                <table class="layui-hide" id="caseList" lay-filter="caseList"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/html" id="reVisitBar">
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="goto">详情</a>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    var form = layui.form;
+    var $ = layui.jquery;
+    var table = layui.table;
+    // 监听性别单选框
+    form.on("radio(sex)", function (data) {
+        var sex = data.value;
+        // console.log(sex);
+        if (this.value === '男') {
+            $('#attribute2').css('display', 'none');
+        } else if (this.value === '女') {
+            $('#attribute2').css('display', 'block');
+        }
+    });
+    // 监听保证单选框
+    form.on("radio(attribute3)", function (data) {
+        var attribute3 = data.value;
+        layer.msg(attribute3);
+        if (attribute3 === '否') {
+            layer.alert('请您仔细阅读并同意该条款！', {
+                title: '系统提示'
+            });
+            $('#sub').attr('disabled', 'disabled');
+            $('#sub').attr('class', 'layui-btn layui-btn-disabled');
+        } else {
+            $('#sub').removeAttr('disabled');
+            $('#sub').attr('class', 'layui-btn');
+        }
+    });
+    //监听基本信息提交
+    form.on('submit(go)', function (data) {
+        var customer = data.field;
+        if (customer.systemicDis == null
+            || customer.systemicDis === ''
+            || customer.systemicDis === undefined) {
+            var arr_box = [];
+            $('input[type=checkbox]:checked').each(function () {
+                arr_box.push($(this).val());
+            });
+            var ss = arr_box.join(',').toString();
+            customer.systemicDis = ss;
+        }
+        $.ajax({
+            type: 'post',
+            contentType: 'application/json;charset=UTF-8',
+            url: '/user/updateCus',
+            data: JSON.stringify(customer),
+            success: function (result) {
+                if(result > 0){
+                    layer.msg('修改成功！');
+                }
+            },
+            error: function (e) {
+                console.log('error代码' + e.status);
+                console.log('error内容' + e.responseText);
+            }
+        });
+        return false;
+    });
+
+    var password = null;
+    //获取该管理员密码
+    $.ajax({
+        type: 'get',
+        url: '/login/getPassword',
+        success: function (result) {
+            password = result;
+            // layer.msg('密码为：' + password);
+        }
+    });
+    //监听密码提交
+    form.on('submit(edit)', function (data) {
+        var mess = JSON.stringify(data.field);
+        var pass = $('#pass').val();
+        var newPass = $('#newPass').val();
+        var rePass = $('#rePass').val();
+        if(password !== pass){
+            layer.msg('原密码不正确！');
+        }else if (newPass !== rePass){
+            layer.msg('两次密码不相同，请重新输入！');
+        }else if (newPass === pass){
+            layer.msg('新密码不可以与原密码相同，请重新输入！');
+        }else if(password === pass){
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/login/updateDocMess',
+                data: mess,
+                success: function (result) {
+                    if(result > 0){
+                        layer.msg('修改成功！');
+                        $('#reset').click();
+                    }else {
+                        layer.msg('修改失败！');
+                    }
+                },
+                error: function (e) {
+                    console.log('error代码' + e.status);
+                    console.log('error内容' + e.responseText);
+                }
+            });
+        }
+        return false;
+    });
+
+    //展示该客户所有预约信息
+    table.render({
+        elem: '#workLineTable'   //渲染目标
+        ,url:'/user/findMyWork'  // 路径默认从static下开始，而且是绝对路径，数据接口;非前后端分离可以直接写Handler中的接口名，不必写：http://localhost:8082
+        ,title: '病例数据表' //数据导出标题
+        ,id: 'caseTableReload' //数据导出标题
+        ,page: false    //是否开启分页功能
+        ,cols: [
+            [
+                { field: 'workId', title: '预约编号', width: 150, unresize: true, sort: true }
+                , { field: 'appointment', title: '预约时间', width:200, sort: true, style:'color: #0909f2;'}
+                , { field: 'customerId', title: '客户ID', width: 150}
+                , { field: 'purpose', title: '预约目的', width: 150}
+                , { field: 'workFlag', title: '状态', width: 159}
+                , { field: 'docId', title: '预约医生', width: 160}
+                // , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 160 }
+            ]
+        ]
+        ,done: function () {
+            $('.layui-table-fixed-r').removeClass('layui-hide');
+            $("[data-field = 'workFlag']").children().each(function () {
+                if($.trim($(this).text()) == '1'){
+                    $(this).text('已就诊');
+                }else if ($.trim($(this).text()) == '2'){
+                    $(this).text('未就诊');
+                }else if ($.trim($(this).text()) == '3'){
+                    $(this).text('未到时间');
+                }else if ($.trim($(this).text()) == '4'){
+                    $(this).text('已取消');
+                }
+            });
+        }
+    });
+    //监听预约信息行工具事件
+    table.on('tool(workLineTable)', function(obj){
+        //obj.data包含该行表格的所有数据（是个对象）
+        var data = obj.data;
+        //console.log(obj)
+        if(obj.event === 'yes'){
+            layer.confirm('确定客户完成预约？', function(index){
+                obj.del();
+                //index 为选中的行数，一般为1
+                data.workFlag = 1;
+                data.remake = '客户已完成就诊';
+                $.ajax({
+                    type: 'post',
+                    contentType: 'application/json;charset=UTF-8',
+                    url: '/work/updateFlag',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        if(result > 0){
+                            layer.msg('更新成功！');
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+                layer.close(index);
+            });
+        } else if(obj.event === 'no'){
+            layer.confirm('确定客户未按时赴约就诊？', function(index){
+                obj.del();
+                //index 为选中的行数，一般为1
+                data.workFlag = 2;
+                data.remake = '客户未按时赴约就诊';
+                $.ajax({
+                    type: 'post',
+                    contentType: 'application/json;charset=UTF-8',
+                    url: '/work/updateFlag',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        if(result > 0){
+                            layer.msg('更新成功！');
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+                layer.close(index);
+            });
+        }else if(obj.event === 'cancel'){
+            layer.confirm('确定取消预约？', function(index){
+                obj.del();
+                //index 为选中的行数，一般为1
+                data.workFlag = 4;
+                data.remake = '客户或医生因特殊原因取消预约';
+                $.ajax({
+                    type: 'post',
+                    contentType: 'application/json;charset=UTF-8',
+                    url: '/work/updateFlag',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        if(result > 0){
+                            layer.msg('更新成功！');
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+                layer.close(index);
+            });
+        }
+    });
+    //展示该客户所有病例信息
+    table.render({
+        elem: '#caseList'   //渲染目标
+        ,url:'/user/findAllCase'  // 路径默认从static下开始，而且是绝对路径，数据接口;非前后端分离可以直接写Handler中的接口名，不必写：http://localhost:8082
+        ,title: '病例数据表' //数据导出标题
+        ,id: 'caseTableReload' //数据导出标题
+        ,page: false    //是否开启分页功能
+        ,cols: [
+            [
+                { field: 'caseId', title: '病例ID', width: 130, unresize: true, sort: true }
+                , { field: 'diagnose', title: '诊断', width: 150, style:'background-color: #009688; color: #fff;'}
+                , { field: 'selfReported', title: '主诉症状', width: 100}
+                , { field: 'diffDiagnosis', title: '鉴别诊断', width: 100}
+                , { field: 'treatmentPlan', title: '治疗计划', width: 100}
+                , { field: 'advice', title: '医嘱', width: 125}
+                , { field: 'recheckTime', title: '复诊时间', width: 110}
+                , { field: 'revisitNum', title: '复诊次数', width: 90}
+                , { fixed: 'right', title: '操作', toolbar: '#reVisitBar', width: 60}
+            ]
+        ]
+        ,done: function () {
+            $('.layui-table-fixed-r').removeClass('layui-hide');
+        }
+    });
+    //监听行工具事件
+    table.on('tool(caseList)', function(obj) {
+        //obj.data包含该行表格的所有数据（是个对象）
+        var data = obj.data;
+        if(obj.event === 'goto'){
+            layer.open({
+                id: 'detail-panel',
+                title: '病例详情',
+                type: 2,    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                content: '/user/findOneAll?caseId='+data.caseId,
+                area: ['900px', '560px'],
+                //弹出层 右上角关闭按钮事件
+                cancel: function(index, layero){
+                    layer.close(index);
+                    return false;
+                }
+            })
+        }
+    });
+</script>
+</body>
+</html>

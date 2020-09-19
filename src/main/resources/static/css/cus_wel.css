@@ -1,0 +1,438 @@
+/* 公共样式 */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    /* height: 10000px; */
+    font: 12px/1.5 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+}
+.a-left{
+	float: left;
+}
+.a-right{
+	float: right;
+}
+/* header */
+
+.head {
+    height: 93.75px;
+    padding: 0 40px;
+    position: relative;
+    border-bottom: 1px solid #efefef;
+}
+
+.head-logo {
+    float: left;
+    width: 247.2px;
+    padding: 10px 0;
+}
+
+.head-logo img {
+    width: 186px;
+}
+
+.head-nav {
+    float: left;
+    width: 1000px;
+    height: 93.75px;
+}
+
+.head-nav ul {
+    height: 35px;
+    margin-top: 30px;
+    padding: 0 50px;
+}
+
+.head-nav ul li a {
+    float: left;
+    padding: 6px 0 7px;
+    margin-left: 50px;
+    font-size: 14px;
+    word-spacing: normal;
+    color: #666666;
+    font-family: "微软雅黑", Helvetica, Arial, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.head-num {
+    float: left;
+    width: 192px;
+    margin-top: 25px;
+    position: relative;
+}
+
+.head-num img {
+    margin-top: 13px;
+    width: 20px;
+    height: 20px;
+}
+
+.head-num span {
+    position: absolute;
+    left: 35px;
+    top: 10px;
+    font-family: arial;
+    font-size: 18px;
+    color: #2096ee;
+}
+/* 身体部分 */
+/* 板块一 */
+.cus-body .box1 {
+	background-image: url(../img/back1.webp);
+	height: 600px;
+}
+.box1 .title-box {
+	width: 1200px;
+	height: 379.5px;
+	margin: 0px auto 0px;
+	/* background-color: white; */
+}
+.box1 .title-box .title{
+	width: 418px;
+	height: 159px;
+	float: left;
+	margin-top: 220px;
+	/* background-color: #0000FF; */
+}
+
+/* 板块二 */
+.cus-body .box2 {
+	/* background-color: #009688; */
+	height: 580px;
+}
+.box2 .content-box{
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto 0px;
+	background-color: white;
+}
+.box2 .content-box .title-box{
+	width: 100%;
+	height: 12%;
+	float: left;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+.box2 .content-box .title-box .title-name{
+	float: left;
+	width: 96px;
+	height: 50px;
+	/* background-color: #00FFFF; */
+}
+.box2 .content-box .title-box .more{
+	float: right;
+	margin: 2%;
+	width: 95px;
+	height: 25px;
+	border: 1px solid #c1c1c1;
+}
+.box2 .content-box .title-box .more a{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	color: #afafaf;
+	display: block;
+	margin: 3px 0 0 3px;
+}
+.box2 .content-box .title-box .title-name span{
+	font-family: 微软雅黑;
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+}
+.box2 .content-box .content{
+	float: left;
+	width: 100%;
+	overflow: hidden;
+}
+.box2 .content-box .content .doc{
+	float: left;
+	width: 19%;
+	height: 100%;
+	margin: 0 6px 0 6px;
+	position: relative;
+}
+.box2 .content-box .content .doc div{
+	overflow: hidden;
+	width: 100%;
+	height: 300px;
+}
+.box2 .content-box .content .doc img{
+	float: left;
+	width: 100%;
+}
+.box2 .content-box .content .doc .detail{
+	text-align: center;
+	line-height: 58px;
+	width: 100%;
+	height: 58px;
+	float: left;
+	/* 让div中文字居中 */
+	overflow: hidden;
+	position: relative;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+
+	font-family: 微软雅黑;
+	font-size: 18px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+	background-color: #eeeeee;
+}
+
+/* 板块三 */
+.cus-body .box3 {
+	background-image: url(../img/back2.webp);
+	opacity: 0.8;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: 0 0%;
+	height: 809px;
+}
+
+.box3 .content-box{
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto 0px;
+	/* background-color: white; */
+}
+.box3 .content-box .title-box{
+	width: 100%;
+	height: 12%;
+	float: left;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-bottom: 1px solid #bcb0b8;
+}
+.box3 .content-box .title-box .title-name{
+	float: left;
+	width: 96px;
+	height: 50px;
+}
+.box3 .content-box .title-box .title-name span{
+	font-family: 微软雅黑;
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	color: white;
+}
+.box3 .content-box .title-box .more{
+	float: right;
+	margin: 2%;
+	width: 95px;
+	height: 25px;
+	border: 1px solid #c1c1c1;
+}
+.box3 .content-box .title-box .more a{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	color: white;
+	display: block;
+	margin: 3px 0 0 3px;
+}
+.box3 .content{
+	float: left;
+	width: 100%;
+	height: 537px;
+	/* background-color: salmon; */
+}
+
+/* 板块4 */
+.cus-body .box4 {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: 0 0%;
+	height: 309px;
+}
+
+.box4 .content-box{
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto 0px;
+	/* background-color: white; */
+}
+.box4 .content-box .title-box{
+	width: 100%;
+	height: 12%;
+	float: left;
+	margin-top: 50px;
+	margin-bottom: 30px;
+	/* border-bottom: 1px solid #bcb0b8; */
+}
+.box4 .content-box .title-box .title-name{
+	float: left;
+	width: 96px;
+	height: 50px;
+}
+.box4 .content-box .title-box .title-name span{
+	font-family: 微软雅黑;
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+}
+.box4 .content-box .title-box .more{
+	float: right;
+	margin: 2%;
+	width: 95px;
+	height: 25px;
+	border: 1px solid #c1c1c1;
+}
+.box4 .content-box .title-box .more a{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	color: #afafaf;
+	display: block;
+	margin: 3px 0 0 3px;
+}
+.box4 .content{
+	float: left;
+	width: 100%;
+	height: 387px;
+}
+.box4 .content .mess{
+	float: left;
+	width: 293px;
+	height: 224px;
+	/* background-color: salmon; */
+}
+.box4 .content .tit{
+	margin-bottom: 5px;
+}
+.box4 .content .tit span{
+	font-size: 16px;
+	color: #696969;
+}
+.box4 .content .mess p{
+	font-size: 13px;
+	line-height: 2em;
+	color: #696969;
+}
+.box4 .content .forms{
+	float: left;
+	overflow: hidden;
+	height: 231px;
+	/* background-color: #00FF00; */
+}
+.box4 .content .forms form input{
+	border: 1px solid rgb(214, 214, 214);
+	height: 30px;
+	width: 434px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+.box4 .content .forms form textarea{
+	border: 1px solid rgb(214, 214, 214);
+	height: 80px;
+	width: 883px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+.box4 .content .forms form button{
+	width: 89px;
+	height: 30px;
+	font-size: 14px;
+	line-height: 14px;
+	color: white;
+	background-color: #969696;
+	border: 1px solid #969696;
+}
+
+/* 板块5 关于我们 */
+.cus-body .box5 {
+	background-color: #f1f1f1;
+	overflow: hidden;
+}
+
+.box5 .content-box {
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto 0px;
+	/* background-color: white; */
+}
+
+.box5 .content-box .title-box {
+	width: 100%;
+	height: 12%;
+	float: left;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+.box5 .content-box .title-box .title-name {
+	float: left;
+	width: 96px;
+	height: 50px;
+	margin-bottom: 30px;
+	/* background-color: #00FFFF; */
+}
+
+.box5 .content-box .title-box .title-name span {
+	font-family: 微软雅黑;
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	color: #191919;
+}
+
+.box5 .content-box .content {
+	float: left;
+	width: 100%;
+	overflow: hidden;
+	/* background-color: white; */
+}
+.box5 .content-box .content .detail{
+	width: 1200px;
+	overflow:hidden;
+	position:relative;
+	display:table-cell;
+	text-align:center;
+	vertical-align:middle;
+}
+.box5 .content-box .content p{
+	width: 100%;
+	font-family: 仿宋_gb2312;
+	color: #333333;
+	font-size: 14px;
+	line-height: 2;
+}
+.box5 .content-box .content p span{
+	margin-right: 10px;
+	width: 100%;
+	font-family: 仿宋_gb2312;
+	color: #000000;
+	font-size: 18px;
+	line-height: 2;
+}
+.box5 .content-box .content .photo{
+	width: 100%;
+	height: 375px;
+	overflow: hidden;
+}
+.box5 .content-box .content img{
+	width: 100%;
+}

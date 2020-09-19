@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>在诊病历</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" />
+</head>
+<body>
+<div class="demoTable" style="margin-left: 20px">
+    搜索ID：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="selectById" autocomplete="off">
+    </div>
+    <button class="layui-btn" id="IDss">搜索</button>
+    <span style="margin: 0 0 0 20px">搜索病例名：</span>
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="selectByName" autocomplete="off">
+    </div>
+    <button class="layui-btn" id="Namess">搜索</button>
+</div>
+<table class="layui-hide" id="test" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="reVisit">复诊</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="goto">详情</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="finish">康复</a>
+</script>
+<script src="/layui/layui.js"></script>
+<script th:inline="javascript">
+    layui.use(['table','layer'], function(){
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //通过thymeleaf展示数据
+        /*var cusList = [[${cusList}]]
+        console.log(cusList);*/
+        table.render({
+            elem: '#test'   //渲染目标
+            ,url:'/case/findAll1'  // 路径默认从static下开始，而且是绝对路径，数据接口;非前后端分离可以直接写Handler中的接口名，不必写：http://localhost:8082
+            ,title: '病例数据表' //数据导出标题
+            ,id: 'caseTableReload' //数据导出标题
+            ,page: false    //是否开启分页功能
+            ,cols: [
+                [
+                    { field: 'caseId', title: '病例ID', width: 180, unresize: true, sort: true }
+                    , { field: 'diagnose', title: '诊断', width: 150, style:'background-color: #009688; color: #fff;'}
+                    , { field: 'pastHistory', title: '既往史'}
+                    , { field: 'selfReported', title: '主诉症状'}
+                    , { field: 'diffDiagnosis', title: '鉴别诊断'}
+                    , { field: 'treatmentPlan', title: '治疗计划'}
+                    , { field: 'advice', title: '医嘱'}
+                    , { field: 'recheckTime', title: '复诊时间'}
+                    , { field: 'revisitNum', title: '复诊次数'}
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 210 }
+                ]
+            ]
+        });
+        // ID搜索按钮触发事件
+        $('#IDss').click(function () {
+            var caseId = $('#selectById').val();
+            // console.log(caseId);
+            if(caseId == null || caseId == ''){
+                table.reload('caseTableReload',{
+                    url: '/case/findAll1',
+                    method: 'get'
+                });
+            }else {
+                table.reload('caseTableReload',{
+                    url: '/case/getById?caseId='+caseId,
+                    method: 'get'
+                });
+            }
+        });
+        // Name搜索按钮触发事件
+        $('#Namess').click(function () {
+            var diagnoseName = $('#selectByName').val();
+            // console.log(diagnoseName);
+            if(diagnoseName == null || diagnoseName === ''){
+                table.reload('caseTableReload',{
+                    url: '/case/findAll1',
+                    method: 'get'
+                });
+            }else {
+                table.reload('caseTableReload',{
+                    url: '/case/findByName?diagnoseName='+diagnoseName,
+                    method: 'get'
+                });
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            //obj.data包含该行表格的所有数据（是个对象）
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'finish'){
+                layer.confirm('确定结束治疗么？', function(index){
+                    obj.del();
+                    //index 为选中的行数，一般为1
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json;charset=UTF-8',
+                        url: '/case/finishCase',
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            location.reload();
+                        },
+                        error: function (e) {
+                            console.log(e.status);
+                            console.log(e.responseText);
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    id: 'save-form',
+                    title: '编辑病例',
+                    type: 2,    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    content: '/case/toCaseEdit?caseId='+data.caseId,
+                    area: ['800px', '560px'],
+                    //弹出层 右上角关闭按钮事件
+                    cancel: function(index, layero){
+                        layer.close(index)
+                        return false;
+                    }
+                })
+            }else if(obj.event === 'goto'){
+                layer.open({
+                    id: 'detail-panel',
+                    title: '病例详情',
+                    type: 2,    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    content: '/case/findOneAll?caseId='+data.caseId,
+                    area: ['900px', '560px'],
+                    //弹出层 右上角关闭按钮事件
+                    cancel: function(index, layero){
+                        layer.close(index);
+                        location.reload();
+                        return false;
+                    }
+                });
+            }else if(obj.event === 'reVisit'){
+                layer.open({
+                    id: 'revisit-form',
+                    title: '病例复诊',
+                    type: 2,    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    content: '/case/toRevisit?caseId='+data.caseId+'&customerId='+data.customerId,
+                    area: ['900px', '560px'],
+                    btn: ['提交','重置'],
+                    // 弹出层 提交按钮事件
+                    yes: function (index) {
+                        var frameId=document.getElementById('revisit-form').getElementsByTagName("iframe")[0].id;
+                        //获取子页面对象：$('#'+frameId)[0].contentWindow
+                        var result = $('#'+frameId)[0].contentWindow.mySubmit();
+                        // console.log(result);
+                    },
+                    //弹出层 重置表单按钮事件
+                    btn2: function(index, layero){
+                        var frameId=document.getElementById('revisit-form').getElementsByTagName("iframe")[0].id;
+                        $('#'+frameId)[0].contentWindow.reset();
+                        return false;
+                    },
+                    //弹出层 右上角关闭按钮事件
+                    cancel: function(index, layero){
+                        layer.close(index);
+                        location.reload();
+                        return false;
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

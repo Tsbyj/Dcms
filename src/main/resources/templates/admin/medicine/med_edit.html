@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>药品信息修改</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<div style="margin: 0 50px 0 50px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>药品信息修改</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <input type="text" name="medicineId" th:value="${med.getMedicineId()}" style="display: none">
+        <div class="layui-form-item">
+            <label class="layui-form-label">药品名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="medName" th:value="${med.getMedName()}" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">药品类型</label>
+            <div class="layui-input-inline">
+                <select name="medType" lay-verify="required" id="docTitle">
+                    <option value=""></option>
+                    <option value="S">手术专用</option>
+                    <option value="C1">处方内服</option>
+                    <option value="C2">处方外用</option>
+                    <option value="B1">保健品</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">成分</label>
+            <div class="layui-input-block">
+                <textarea name="ingredient" th:text="${med.getIngredient()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">性状</label>
+            <div class="layui-input-block">
+                <textarea name="medCharacter" th:text="${med.getMedCharacter()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">功能主治</label>
+            <div class="layui-input-block">
+                <textarea name="majorFunction" th:text="${med.getMajorFunction()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">用法用量</label>
+            <div class="layui-input-block">
+                <textarea name="useMethod" th:text="${med.getUseMethod()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">不良反应</label>
+            <div class="layui-input-block">
+                <textarea name="unEffect" th:text="${med.getUnEffect()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">禁忌</label>
+            <div class="layui-input-block">
+                <textarea name="taboo" th:text="${med.getTaboo()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">注意事项</label>
+            <div class="layui-input-block">
+                <textarea name="notice" th:text="${med.getNotice()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">贮藏</label>
+            <div class="layui-input-block">
+                <textarea name="store" th:text="${med.getStore()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="sub" style="display: none" lay-submit lay-filter="medAdd">添加</button>
+                <button id="reset" type="reset" style="display: none">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    //模拟点击提交按钮
+    function mySubmit(){
+        console.log("这是med_edit页面mySubmit方法");
+        document.getElementById('sub').click();
+    }
+    // 清空表单
+    function reset() {
+        console.log("这是med_edit页面reset方法");
+        document.getElementById('reset').click();
+    }
+    layui.use(['form', 'layedit', 'element'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , $ = layui.jquery
+            , element = layui.element;
+
+        //监听提交
+        form.on('submit(medAdd)', function (data) {
+            var medicine = JSON.stringify(data.field);
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/med/updateMed',
+                data: medicine,
+                success: function (result) {
+                    layer.msg('修改结果：' + result);
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

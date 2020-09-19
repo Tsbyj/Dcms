@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病例添加</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<div style="margin: 0 50px 0 50px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>私人牙医——添加病例信息——<span id="num" th:text="${caseNum}"></span></legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" id="caseForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">诊断</label>
+            <div class="layui-input-inline">
+                <input type="text" name="diagnose" placeholder="请输入标题"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">相关病人</label>
+            <div class="layui-input-inline">
+                <select name="customerId" lay-verify="required">
+                    <option value=""></option>
+                    <option th:each="user:${cusList}" th:value="${user.getCustomerId()}" th:text="${user.getCustomerName()}">张三</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">诊断医生</label>
+            <div class="layui-input-inline">
+                <select name="doctorId" lay-verify="required">
+                    <option value=""></option>
+                    <option th:each="doc:${docList}" th:value="${doc.getDocId()}" th:text="${doc.getDocName()}">张三</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">主诉症状</label>
+            <div class="layui-input-block">
+                <textarea name="selfReported" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">既往史</label>
+            <div class="layui-input-block">
+                <textarea name="pastHistory" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">鉴别诊断</label>
+            <div class="layui-input-block">
+                <textarea name="diffDiagnosis" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">治疗计划</label>
+            <div class="layui-input-block">
+                <textarea id="treatmentPlan" name="treatmentPlan" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 0;" >
+            <label class="layui-form-label">所需药品</label>
+            <div class="layui-input-inline">
+                <select lay-filter="medType">
+                    <option value=""></option>
+                    <option value="S">手术专用</option>
+                    <option value="C1">内服</option>
+                    <option value="C2">外用</option>
+                    <option value="B1">保健品</option>
+                </select>
+            </div>
+        </div>
+        <div style="float: left;height: 229px;overflow: auto;margin-bottom: 20px;">
+            <table class="layui-hide" id="MedMList" lay-filter="MedMList"></table>
+        </div>
+        <div  style="margin: 10px 0 20px 10px;float: left;width: 510px;">
+            <textarea id="medMess" placeholder="所需药品信息" disabled class="layui-textarea"  rows="10"></textarea>
+        </div>
+        <textarea id="medMess1" name="medMess" placeholder="所需药品信息" style="display: none" rows="10"></textarea>
+        <div  style="margin: 10px 0 20px 10px;float: left;">
+            <button onclick="resetMed(); return false" type="reset" class="layui-btn">清空</button>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">医嘱</label>
+            <div class="layui-input-block">
+                <textarea name="advice" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">复诊时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="recheckTime" id="date" required lay-verify="required" placeholder="请输入复诊时间"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="caseAdd">立即提交</button>
+                <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="addMedM">添加</a>
+</script>
+<script src="/layui/layui.js"></script>
+<script>
+    function getTrResult(value){
+        document.getElementById('getTrResult').value = value;
+    }
+    // 清空表单
+    function reset() {
+        // 清空form表单中的所有input值
+        /*layui.jquery(function () {
+            layui.jquery('#caseForm input').each(function () {
+                layui.jquery(this).val('');
+            });
+        });
+        //清空form表单中所有textarea中的text值
+        var textarea = document.getElementsByClassName('layui-textarea');
+        var length = document.getElementsByClassName('layui-textarea').length;
+        for(var i = 0;i < length;i++){
+            textarea[i].value = '';
+        }*/
+        //简单方法
+        document.getElementById('reset').click();
+    }
+    function reAdd(caseNum){
+        document.getElementById('num').innerText = caseNum;
+    }
+    //Demo
+    layui.use(['form', 'layedit', 'laydate', 'table','layer'], function () {
+        var form = layui.form;
+        var layedit = layui.layedit;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+
+        //  时间选择器
+        laydate.render({
+            elem: '#date'
+        });
+        var medType = 'S';
+        form.on('select(medType)',function(data){
+            medType = data.value;
+            console.log(medType);
+            table.reload('medmList',{
+                url: '/medm/findByType?medType='+medType,
+                method: 'get'
+            });
+        });
+        table.render({
+            elem: '#MedMList'   //渲染目标
+            ,id: 'medmList'
+            ,url:'/medm/findByType?medType=' + medType  // 路径默认从static下开始，而且是绝对路径，数据接口;非前后端分离可以直接写Handler中的接口名，不必写：http://localhost:8082
+            ,title: '用户数据表' //数据导出标题
+            ,page: false    //是否开启分页功能
+            ,cols: [
+                [
+                    { field: 'produceNum', title: '药品批号', width: 130, fixed: 'left', unresize: true, sort: true }
+                    , { field: 'medName', title: '药品名', width: 100}
+                    , { field: 'medFactory', title: '生产厂家', width: 87}
+                    , { field: 'medNumber', title: '库存量', width: 75}
+                    , { field: 'getNum', title: '使用量', width: 75, edit: 'text'}
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 60 }
+                ]
+            ]
+        });
+        table.on('tool(MedMList)', function(obj){
+            var data = obj.data;
+            var medAddMes = data.medName + ':' + data.getNum + '| ';
+            var medAddMess = data.produceNum + ':' + data.getNum + '| ';
+            if(obj.event === 'addMedM'){
+                layer.msg(medAddMes);
+                document.getElementById('medMess').value += medAddMes;
+                document.getElementById('medMess1').value += medAddMess;
+            }
+        });
+        //监听提交
+        form.on('submit(caseAdd)', function (data) {
+            var caseInfo = JSON.stringify(data.field);
+            console.log(caseInfo);
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/case/adminSaveCase',
+                data: caseInfo,
+                success: function (result) {
+                    reAdd(result);
+                    reset();
+                    layer.alert(result, {
+                        title: '添加状态'
+                    })
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

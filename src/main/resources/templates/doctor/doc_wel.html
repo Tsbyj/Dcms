@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>医生主界面</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/cus_chat.css">
+</head>
+
+<body class="layui-layout-body">
+<!--聊天界面-->
+<div class="dialogue-wrapper">
+    <div class="dialogue-main">
+        <div class="dialogue-header">
+            <i id="btn_wane" class="dialogue-wane">_</i>
+            <i id="btn_close" class="dialogue-close">×</i>
+            <div class="dialogue-service-info">
+                <i class="dialogue-service-img">头像</i>
+                <div class="dialogue-service-title">
+                    <p class="dialogue-service-name">咨询客服</p>
+                    <p class="dialogue-service-detail">私人牙医客服支持平台</p>
+                </div>
+            </div>
+        </div>
+        <!-- 消息记录部分 -->
+        <div id="dialogue_contain" class="dialogue-contain">
+            <!--<p class="dialogue-service-contain"><span class="dialogue-text dialogue-service-text">私人牙医欢迎您咨询！</span></p>-->
+            <!-- <p class="dialogue-customer-contain"><span class="dialogue-text dialogue-customer-text">我有个问题</span></p> -->
+        </div>
+        <!-- 内容编辑并发送部分 -->
+        <div class="dialogue-submit">
+            <p id="dialogue_hint" class="dialogue-hint"><span class="dialogue-hint-icon">!</span><span class="dialogue-hint-text">发送内容不能为空</span></p>
+            <textarea id="dialogue_input" class="dialogue-input-text" placeholder="请输入您的问题，按Enter键提交（shift+Enter换行）"></textarea>
+            <!--<div class="dialogue-input-tools">
+                发送
+            </div>-->
+        </div>
+    </div>
+</div>
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部导航栏 -->
+        <div class="layui-header">
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="/user/toCusWel" target="_blank" title="客户短前台">
+                        <i class="layui-icon layui-icon-website"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="/doctor/toDocWel" title="刷新">
+                        <i class="layui-icon layui-icon-refresh-3"></i>
+                    </a>
+                </li>
+                <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search"
+                           layadmin-event="serach" lay-action="template/search.html?keywords=">
+                </li>-->
+            </ul>
+            <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a id="btn_open" href="javascript:;" layadmin-event="message" lay-text="消息中心">
+                        <i class="layui-icon layui-icon-notice"></i>
+                        <!-- 如果有新消息，则显示小圆点 -->
+                        <span style="display: none" class="layui-badge-dot"></span>
+                    </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect style="margin-right: 40px">
+                    <a href="javascript:;">
+                        <cite th:text="${session.userName}">贤心</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href onclick="goto('/doctor/toDocInfo')">基本资料</a></dd>
+                        <dd><a lay-href onclick="goto('/doctor/toDocRePass')">修改密码</a></dd>
+                        <hr>
+                        <dd layadmin-event="logout" style="text-align: center;"><a href="/login/edit">退出</a></dd>
+                    </dl>
+                </li>
+
+                <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="about"><i
+                            class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>-->
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+                    <a href="javascript:;" layadmin-event="more">
+                        <i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!-- 侧边导航栏 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo" lay-href="home/console.html">
+                    <span>私人牙医 医生管理</span>
+                </div>
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+                    lay-filter="layadmin-system-side-menu">
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-list"></i>
+                            <cite>病例管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="layui-this">
+                                <a lay-href onclick="goto('/case/toList1')">在诊病历</a>
+                            </dd>
+                            <dd>
+                                <a lay-href onclick="goto('/case/toList2')">历史病例</a>
+                            </dd>
+                            <dd>
+                                <a lay-href onclick="goto('/case/toCaseAdd')">新增病例</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="cus" class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>客户管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a lay-href onclick="goto('/cus/toCusList')">客户列表</a>
+                            </dd>
+                            <dd>
+                                <a lay-href onclick="goto('/cus/toAddCus')">新增客户</a>
+                            </dd>
+                            <dd>
+                                <a lay-href onclick="goto('/work/toAddWorkLine')">预约信息</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body" style="top: 60px;">
+            <div style="margin: 0 20px 0 20px;overflow: hidden">
+                <iframe id="ifr" src="/case/toList1" frameborder="0" class="layadmin-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.all.js"></script>
+<script th:inline="javascript">
+    var $ = layui.jquery;
+    var doc = document;
+    var websocket = null;
+    var message = {type:2,toUser:'',fromUser:'',msg:''};
+    var dialogueInput = doc.getElementById('dialogue_input'),
+        // 消息记录区
+        dialogueContain = doc.getElementById('dialogue_contain'),
+        // 发送提示
+        dialogueHint = doc.getElementById('dialogue_hint'),
+        // 点击缩略区
+        btnOpen = doc.getElementById('btn_open'),
+        // 点击最小化按钮
+        btnWane = doc.getElementById('btn_wane'),
+        //点击关闭按钮
+        btnClose = doc.getElementById('btn_close'),
+        timer,
+        timerId,
+        shiftKeyOn = false;  // 辅助判断shift键是否按住
+    btnOpen.addEventListener('click', function(e) {
+        $('.dialogue-main').css({'display': 'inline-block', 'height': '0','z-index': '2000'});
+        $('.dialogue-main').animate({'height': '600px'});
+        $('.layui-badge-dot').css({'display': 'none'});
+        conectWebSocket();
+    });
+
+    btnWane.addEventListener('click', function(e) {
+        $('.dialogue-main').animate({'height': '0'}, function() {
+            $('.dialogue-main').css({'display': 'none'});
+        });
+    });
+
+    btnClose.addEventListener('click', function(e) {
+        $('.dialogue-main').animate({'height': '0'}, function() {
+            $('.dialogue-main').css({'display': 'none'});
+        });
+        closeWebSocket();
+    });
+
+    dialogueInput.addEventListener('keydown', function(e) {
+        var e = e || window.event;
+        if (e.keyCode == 16) {
+            shiftKeyOn = true;
+        }
+        if (shiftKeyOn) {
+            return true;
+        } else if (e.keyCode == 13 && dialogueInput.value == '') {
+            // console.log('发送内容不能为空');
+            // 多次触发只执行最后一次渐隐
+            setTimeout(function() {
+                fadeIn(dialogueHint);
+                clearTimeout(timerId)
+                timer = setTimeout(function() {
+                    fadeOut(dialogueHint)
+                }, 2000);
+            }, 10);
+            timerId = timer;
+            return true;
+        } else if (e.keyCode == 13) {
+            var nodeP = doc.createElement('p'),
+                nodeSpan = doc.createElement('span');
+            message.msg = dialogueInput.value;
+            nodeP.classList.add('dialogue-customer-contain');
+            nodeSpan.classList.add('dialogue-text', 'dialogue-customer-text');
+            nodeSpan.innerHTML = dialogueInput.value;
+            nodeP.appendChild(nodeSpan);
+            dialogueContain.appendChild(nodeP);
+            dialogueContain.scrollTop = dialogueContain.scrollHeight;
+            websocket.send(JSON.stringify(message));
+        }
+    });
+
+    dialogueInput.addEventListener('keyup', function(e) {
+        var e = e || window.event;
+        if (e.keyCode == 16) {
+            shiftKeyOn = false;
+            return true;
+        }
+        if (!shiftKeyOn && e.keyCode == 13) {
+            dialogueInput.value = null;
+        }
+    });
+
+    // 升级协议，连接websocket
+    function conectWebSocket() {
+        var nickname = null;
+        var nickId = null;
+        nickname = [[${session.userName}]];
+        nickId = [[${session.userId}]];
+        if (nickname !== "" && nickname != null) {
+            message.fromUser = nickId;
+        }
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window && websocket == null) {
+            layer.msg('开始聊天！');
+            websocket = new WebSocket("ws://localhost:8084/websocket/" + nickId + "/" + nickname);
+        } else if(websocket != null){
+            layer.msg('连接未中断，请继续聊天！');
+        }else {
+            layer.msg('Not support websocket！');
+        }
+        //连接发生错误的回调方法
+        websocket.onerror = function () {
+            layer.msg("连接发生错误！");
+        };
+        //连接成功建立的回调方法
+        websocket.onopen = function (event) {
+            getServiceText('系统提示：私人牙医欢迎您为客户服务！');
+        };
+        //接收到消息的回调方法
+        websocket.onmessage = function (event) {
+            var msg = event.data;
+            if (msg == 999 || msg.indexOf('999') != -1) {
+                message.toUser = '';
+                getServiceText('系统提示：客户已离线！');
+            } else if(msg == 998 || msg.indexOf('998') != -1){
+                getServiceText('系统提示：当前没有客户与您联系！');
+            } else {
+                var mess = msg.split(">");
+                var obj = eval("(" + mess[1] + ")");
+                if(obj.fromUser != null && obj.fromUser != ''){
+                    if(message.toUser == '' || message.toUser == obj.fromUser){
+                        message.toUser = obj.fromUser;
+                        getServiceText(mess[0] + ':' + obj.msg);
+                        var display = $('.dialogue-main').css('display');
+                        if(display == 'none'){
+                            $('.layui-badge-dot').css({'display': 'inline'});
+                        }
+                    }
+                }
+            }
+        };
+        //连接关闭的回调方法
+        websocket.onclose = function () {
+            layer.msg('感谢您为客户答疑解惑！');
+        };
+        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = function () {
+            websocket.close();
+        }
+    }
+
+    //关闭连接
+    function closeWebSocket() {
+        layer.confirm('即将删除所有与该客户的聊天记录，真的关闭窗口么', function(index){
+            websocket.close();
+            websocket = null;
+            while (dialogueContain.hasChildNodes()){
+                dialogueContain.removeChild(dialogueContain.firstChild);
+            }
+            layer.close(index);
+        });
+    }
+
+    function getServiceText(data) {
+        var serviceText = data;
+        var nodeP = doc.createElement('p'),
+            nodeSpan = doc.createElement('span');
+        if(data.indexOf("系统") != -1){
+            message.toUser = '';
+            nodeP.classList.add('dialogue-sys-contain');
+            nodeSpan.classList.add('sys-text');
+        }else {
+            nodeP.classList.add('dialogue-service-contain');
+            nodeSpan.classList.add('dialogue-text', 'dialogue-service-text');
+        }
+        nodeSpan.innerHTML = serviceText;
+        nodeP.appendChild(nodeSpan);
+        dialogueContain.appendChild(nodeP);
+        dialogueContain.scrollTop = dialogueContain.scrollHeight;
+    }
+    function goto(index){
+        var ss = document.getElementById('ifr').getAttribute('src');
+        document.getElementById('ifr').setAttribute('src', index);
+    }
+    // 渐隐
+    function fadeOut(obj) {
+        var n = 100;
+        var time = setInterval(function() {
+            if (n > 0) {
+                n -= 10;
+                obj.style.opacity = '0.' + n;
+            } else if (n <= 30) {
+                obj.style.opacity = '0';
+                clearInterval(time);
+            }
+        }, 10);
+        return true;
+    }
+
+    // 渐显
+    function fadeIn(obj) {
+        var n = 30;
+        var time = setInterval(function() {
+            if (n < 90) {
+                n += 10;
+                obj.style.opacity = '0.' + n;
+            } else if (n >= 80) {
+
+                obj.style.opacity = '1';
+                clearInterval(time);
+            }
+        }, 100);
+        return true;
+    }
+</script>
+</body>
+
+</html>

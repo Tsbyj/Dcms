@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">修改密码</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">原密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="pass" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="newPass" name="password" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">验证密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="rePass" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button id="sub" class="layui-btn" lay-submit lay-filter="edit">修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        var password = null
+        //获取该管理员密码
+        $.ajax({
+            type: 'get',
+            url: '/login/getPassword',
+            success: function (result) {
+                password = result;
+                layer.msg('密码为：' + password);
+            }
+        });
+        //监听提交
+        form.on('submit(edit)', function (data) {
+            var mess = JSON.stringify(data.field);
+            var pass = $('#pass').val();
+            var newPass = $('#newPass').val();
+            var rePass = $('#rePass').val();
+            if(password !== pass){
+                layer.msg('原密码不正确！');
+            }else if (newPass !== rePass){
+                layer.msg('两次密码不相同，请重新输入！');
+            }else if(password === pass){
+                $.ajax({
+                    type: 'post',
+                    contentType: 'application/json;charset=UTF-8',
+                    url: '/login/updateMess',
+                    data: mess,
+                    success: function (result) {
+                        if(result > 0){
+                            layer.msg('修改成功！');
+                            $('#reset').click();
+                        }else {
+                            layer.msg('修改失败！');
+                        }
+                    },
+                    error: function (e) {
+                        console.log('error代码' + e.status);
+                        console.log('error内容' + e.responseText);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

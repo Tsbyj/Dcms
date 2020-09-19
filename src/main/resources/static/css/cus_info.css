@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    background-color: #f2f2f2;
+    font: 12px/1.5 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+}
+.a-left{
+	float: left;
+}
+.a-right{
+	float: right;
+}
+/* header */
+
+.head {
+    height: 93.75px;
+    padding: 0 40px;
+    position: relative;
+    border-bottom: 1px solid #efefef;
+	background-color: white;
+}
+
+.head-logo {
+    float: left;
+    width: 247.2px;
+    padding: 10px 0;
+}
+
+.head-logo a img {
+    width: 186px;
+}
+
+.head-nav {
+    float: left;
+    width: 1000px;
+    height: 93.75px;
+}
+
+.head-nav ul {
+    height: 35px;
+    margin-top: 30px;
+    padding: 0 50px;
+}
+
+.head-nav ul li a {
+    float: left;
+    padding: 6px 0 7px;
+    margin-left: 50px;
+    font-size: 14px;
+    word-spacing: normal;
+    color: #666666;
+    font-family: "微软雅黑", Helvetica, Arial, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.head-num {
+    float: left;
+    width: 192px;
+    margin-top: 25px;
+    position: relative;
+}
+
+.head-num img {
+    margin-top: 13px;
+    width: 20px;
+    height: 20px;
+}
+
+.head-num span {
+    position: absolute;
+    left: 35px;
+    top: 10px;
+    font-family: arial;
+    font-size: 18px;
+    color: #2096ee;
+}
+
+.body{
+	width: 1024px;
+	margin: 0 auto;
+	overflow: hidden;
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病例修改</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+
+<body>
+<div style="margin: 0 50px 0 50px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>私人牙医——修改病例信息</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" id="caseForm">
+        <input type="text" name="caseId" th:value="${caseInfo.getCaseId()}" style="display: none">
+        <input type="text" name="customerId" th:value="${caseInfo.getCustomerId()}" style="display: none">
+        <input type="text" name="diagnoseTime" th:value="${caseInfo.getDiagnoseTime()}" style="display: none">
+        <input type="text" name="status" th:value="${caseInfo.getStatus()}" style="display: none">
+        <input type="text" name="doctorId" th:value="${caseInfo.getDoctorId()}" style="display: none">
+        <div class="layui-form-item">
+            <label class="layui-form-label">诊断</label>
+            <div class="layui-input-inline">
+                <input type="text" th:value="${caseInfo.getDiagnose()}" name="diagnose" placeholder="请输入标题"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">主诉症状</label>
+            <div class="layui-input-block">
+                <textarea name="selfReported" th:text="${caseInfo.getSelfReported()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">既往史</label>
+            <div class="layui-input-block">
+                <textarea name="pastHistory"  th:text="${caseInfo.getPastHistory()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">鉴别诊断</label>
+            <div class="layui-input-block">
+                <textarea name="diffDiagnosis" th:text="${caseInfo.getDiffDiagnosis()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">治疗计划</label>
+            <div class="layui-input-block">
+                <textarea id="treatmentPlan" th:text="${caseInfo.getTreatmentPlan()}" name="treatmentPlan" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text layui-col-md6">
+            <label class="layui-form-label">医嘱</label>
+            <div class="layui-input-block">
+                <textarea name="advice" th:text="${caseInfo.getAdvice()}" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">复诊时间</label>
+            <div class="layui-input-inline">
+                <input type="text" th:value="${caseInfo.getRecheckTime()}" name="recheckTime" id="date" required placeholder="请输入复诊时间"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="caseAdd">修改</button>
+                <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script>
+    function getTrResult(value){
+        document.getElementById('getTrResult').value = value;
+    }
+    // 清空表单
+    //Demo
+    layui.use(['form', 'layedit', 'laydate', 'layer'], function () {
+        var form = layui.form;
+        var layedit = layui.layedit;
+        var laydate = layui.laydate;
+        var rate = layui.rate;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+
+        //  时间选择器
+        laydate.render({
+            elem: '#date'
+        });
+        //监听提交
+        form.on('submit(caseAdd)', function (data) {
+            var caseInfo = JSON.stringify(data.field);
+            console.log(caseInfo);
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                url: '/case/updateCase',
+                data: caseInfo,
+                success: function (result) {
+                    layer.msg('修改结果' + result);
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>
